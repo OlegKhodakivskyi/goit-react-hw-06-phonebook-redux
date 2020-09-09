@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
-import actionTypes from "./phoneBookActionTypes";
+import phoneBookActionsTypes from "./phoneBookActionTypes";
 
 const addContact = ({ name, number }) => ({
-  type: actionTypes.ADD,
+  type: phoneBookActionsTypes.ADD,
   payload: {
     id: uuidv4(),
     name,
@@ -11,17 +11,20 @@ const addContact = ({ name, number }) => ({
 });
 
 const deleteContact = ({ id }) => ({
-  type: actionTypes.DEL,
+  type: phoneBookActionsTypes.DEL,
   payload: {
     id,
   },
 });
 
-const filter = ({ filter }) => ({
-  type: actionTypes.FILTER,
-  payload: {
-    filter,
-  },
-});
+const filter = (filter) => {
+  console.log(filter);
+  return {
+    type: phoneBookActionsTypes.FILTER,
+    payload: {
+      filter,
+    },
+  };
+};
 
 export default { addContact, deleteContact, filter };

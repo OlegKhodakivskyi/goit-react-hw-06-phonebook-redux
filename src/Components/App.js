@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { CSSTransition } from "react-transition-group";
-import { v4 as uuidv4 } from "uuid";
+import { connect } from "react-redux";
+import phoneBookActions from "../redux/phoneBookActions/phoneBookActions";
 import ContactForm from "./Contacts/ContactForm";
 import ContactFormList from "./Contacts/ContactFormList/ContactFormList";
 import Filter from "./Filter/Filter";
@@ -9,72 +10,28 @@ import Alert from "./Alert/Alert";
 import stylesAlert from "./Alert/Alert.module.css";
 
 class App extends Component {
-  // state = {
-  //   contacts: [
-  //     { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
-  //     { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
-  //     { id: "id-3", name: "Eden Clements", number: "645-17-79" },
-  //     { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
-  //   ],
-  //   filter: "",
-  //   name: "",
-  //   number: "",
-  //   alert: false,
-  // };
+  componentDidMount() {
+    // console.log("DidMount");
+    const persistedContacts = localStorage.getItem("contacts");
+    // console.log(JSON.parse(persistedContacts));
+    if (persistedContacts) {
+      this.setState({ contacts: JSON.parse(persistedContacts) });
+    }
+  }
 
-  // componentDidMount() {
-  //   // console.log("DidMount");
-  //   const persistedContacts = localStorage.getItem("contacts");
-  //   // console.log(JSON.parse(persistedContacts));
-  //   if (persistedContacts) {
-  //     this.setState({ contacts: JSON.parse(persistedContacts) });
-  //   }
-  // }
+  componentDidUpdate(prevProps) {
+    // console.log("Did Update");
+    // console.log("prevState", prevState);
+    // console.log("this.state", this.state);
 
-  // componentDidUpdate(prevProps) {
-  //   // console.log("Did Update");
-  //   // console.log("prevState", prevState);
-  //   // console.log("this.state", this.state);
+    if (prevProps.contacts !== this.state.contacts) {
+      localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
+    }
+  }
 
-  //   if (prevProps.contacts !== this.state.contacts) {
-  //     localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
-  //   }
-  // }
-
-  // addContact = ({ name, number }) => {
-  //   const { contacts } = this.state;
-
-  //   const findContact = contacts.find(
-  //     (contact) => contact.name.toLowerCase() === name.toLowerCase()
-  //   );
-  //   if (findContact) {
-  //     this.setState({ alert: true });
-  //     setTimeout(() => this.setState({ alert: false }), 3000);
-  //     return;
-  //   }
-
-  //   this.setState((prevState) => ({
-  //     contacts: [
-  //       ...prevState.contacts,
-  //       {
-  //         id: uuidv4(),
-  //         name,
-  //         number,
-  //       },
-  //     ],
-  //   }));
-  // };
-
-  // onRemoveContact = (id) => {
-  //   const { contacts } = this.state;
-  //   this.setState({
-  //     contacts: contacts.filter((contact) => contact.id !== id),
-  //   });
-  // };
-
-  // onChangeFilter = (filter) => {
-  //   this.setState({ filter });
-  // };
+  alertNotification = () => {
+    this.props.alertNotification();
+  };
 
   // findContact = () => {
   //   return this.state.filter
@@ -85,8 +42,6 @@ class App extends Component {
   // };
 
   render() {
-    // const { filter, alert } = this.state;
-
     return (
       <>
         {/* ----------- ALert ----- */}
@@ -118,15 +73,25 @@ class App extends Component {
 
         <ContactForm />
         <h2 className={styles.contactListTitle}>Contacts</h2>
-        {/* <Filter filter={filter} onChangeFilter={this.onChangeFilter} /> */}
-
-        <ContactFormList
-          // findContact={this.findContact()}
-          // onRemoveContact={this.onRemoveContact}
-        />
+        <Filter />
+        <ContactFormList />
       </>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    contacts: state.contacts,
+    alert: state.alert,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // addContact: (contact) => dispatch(phoneBookActions.onAddContact(contact)),
+    alertNotification: () => dispatch(phoneBookActions.alertNotification()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

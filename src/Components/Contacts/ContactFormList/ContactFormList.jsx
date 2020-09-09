@@ -1,9 +1,9 @@
 import React from "react";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { connect } from "react-redux";
+import phoneBookActions from "../../../redux/phoneBookActions/phoneBookActions";
 import ContactFormListItem from "./ContactFormListItem/ContactFormListItem";
 import styles from "./ContactList.module.css";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
-import phoneBookActions from "../../../redux/phoneBookActions/phoneBookActions";
 
 const ContactFormList = ({ contacts, onRemoveContact }) => (
   <>
@@ -39,6 +39,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = { onRemoveContact: phoneBookActions.deleteContact };
+const mapDispatchToProps = {
+  onRemoveContact: phoneBookActions.deleteContact
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactFormList);

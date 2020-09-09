@@ -16,9 +16,26 @@ class ContactForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    this.props.onAddContact(this.state);
-    this.setState({ name: "", number: "" });
+    const dublicate = this.props.contacts.items.map(
+      (contact) => contact.name
+    );
+    dublicate.find((item) => item === this.state.name)
+      ? this.props.alertNotification()
+      : this.props.addContact();
+    this.setState({ name: "" });
+    this.setState({ number: "" });
+
+    // this.props.onAddContact(this.state);
+    // this.setState({ name: "", number: "" });
   };
+
+  // findContact = () => {
+  //   return this.state.filter
+  //     ? this.state.contacts.filter((contact) =>
+  //         contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
+  //       )
+  //     : this.state.contacts;
+  // };
 
   render() {
     const { name, number } = this.state;
