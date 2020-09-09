@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import phoneBookActions from "../../redux/phoneBookActions/phoneBookActions";
 
-export default class ContactForm extends Component {
+class ContactForm extends Component {
   state = {
     name: "",
     number: "",
@@ -50,3 +52,9 @@ export default class ContactForm extends Component {
     );
   }
 }
+
+const mapDispatchToProps = {
+  onAddContact: phoneBookActions.addContact,
+};
+
+export default connect(null, mapDispatchToProps)(ContactForm);

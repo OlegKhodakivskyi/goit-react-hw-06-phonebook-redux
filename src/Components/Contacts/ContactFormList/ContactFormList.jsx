@@ -1,12 +1,14 @@
 import React from "react";
+import { connect } from "react-redux";
 import ContactFormListItem from "./ContactFormListItem/ContactFormListItem";
 import styles from "./ContactList.module.css";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import phoneBookActions from "../../../redux/phoneBookActions/phoneBookActions";
 
-const ContactFormList = ({ findContact, onRemoveContact }) => (
+const ContactFormList = ({ contacts, onRemoveContact }) => (
   <>
     <TransitionGroup component="ul" className={styles.contactList}>
-      {findContact.map(({ id, name, number }) => (
+      {contacts.map(({ id, name, number }) => (
         <CSSTransition
           key={id}
           timeout={1000}
@@ -17,7 +19,7 @@ const ContactFormList = ({ findContact, onRemoveContact }) => (
             key={id}
             name={name}
             number={number}
-            onRemove={() => onRemoveContact(id)}
+            onRemove={() => onRemoveContact({ id })}
           />
         </CSSTransition>
       ))}
@@ -25,4 +27,18 @@ const ContactFormList = ({ findContact, onRemoveContact }) => (
   </>
 );
 
-export default ContactFormList;
+const mapStateToProps = (state) => {
+  return {
+    contacts: state.contacts.filter
+      ? state.contacts.items.filter((contact) =>
+          contact.name
+            .toLowerCase()
+            .includes(state.contacts.filter.toLowerCase())
+        )
+      : state.contacts.items,
+  };
+};
+
+const mapDispatchToProps = { onRemoveContact: phoneBookActions.deleteContact };
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactFormList);
