@@ -19,7 +19,7 @@ const ContactFormList = ({ contacts, onRemoveContact }) => (
             key={id}
             name={name}
             number={number}
-            onRemove={() => onRemoveContact({ id })}
+            onRemove={() => onRemoveContact(id)}
           />
         </CSSTransition>
       ))}
@@ -40,7 +40,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  onRemoveContact: phoneBookActions.deleteContact
+  onRemoveContact: phoneBookActions.deleteContact,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactFormList);

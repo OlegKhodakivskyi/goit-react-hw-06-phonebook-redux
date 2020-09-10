@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { CSSTransition } from "react-transition-group";
 import { connect } from "react-redux";
-import phoneBookActions from "../redux/phoneBookActions/phoneBookActions";
 import ContactForm from "./Contacts/ContactForm";
 import ContactFormList from "./Contacts/ContactFormList/ContactFormList";
 import Filter from "./Filter/Filter";
@@ -30,6 +29,7 @@ class App extends Component {
   }
 
   render() {
+    const { alert } = this.props;
     return (
       <>
         {/* ----------- ALert ----- */}
@@ -69,8 +69,9 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log(state.contacts.alertSwitch);
   return {
-    contacts: state.contacts.alert,
+    alert: state.contacts.alertSwitch,
   };
 };
 

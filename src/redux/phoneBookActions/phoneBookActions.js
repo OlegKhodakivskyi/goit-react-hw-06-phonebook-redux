@@ -10,7 +10,7 @@ const addContact = ({ name, number }) => ({
   },
 });
 
-const deleteContact = ({ id }) => ({
+const deleteContact = ( id ) => ({
   type: phoneBookActionsTypes.DEL,
   payload: {
     id,
