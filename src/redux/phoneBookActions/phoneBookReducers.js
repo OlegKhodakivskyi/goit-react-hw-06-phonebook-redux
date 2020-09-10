@@ -50,4 +50,14 @@ const filter = (state = "", { type, payload }) => {
   }
 };
 
-export default combineReducers({ items, filter });
+const alertSwitch = (state = false, { type, payload }) => {
+  switch (type) {
+    case phoneBookActionsTypes.DUPLICATE:
+      return !state;
+
+    default:
+      return state;
+  }
+};
+
+export default combineReducers({ items, filter, alertSwitch });

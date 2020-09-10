@@ -16,26 +16,23 @@ class ContactForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    const dublicate = this.props.contacts.items.map(
-      (contact) => contact.name
-    );
-    dublicate.find((item) => item === this.state.name)
-      ? this.props.alertNotification()
-      : this.props.addContact();
-    this.setState({ name: "" });
-    this.setState({ number: "" });
-
-    // this.props.onAddContact(this.state);
-    // this.setState({ name: "", number: "" });
+    if (this.duplicateFn()) {
+      this.props.onAlert();
+      setTimeout(() => {
+        this.props.onAlert();
+      }, 1500);
+    } else {
+      this.props.onAddContact({ ...this.state });
+      this.setState({ name: "", number: "" });
+    }
   };
 
-  // findContact = () => {
-  //   return this.state.filter
-  //     ? this.state.contacts.filter((contact) =>
-  //         contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
-  //       )
-  //     : this.state.contacts;
-  // };
+  duplicateFn = () => {
+    return this.props.contacts.some(
+      (contacts) =>
+        contacts.name.toLowerCase() === this.state.name.toLowerCase()
+    );
+  };
 
   render() {
     const { name, number } = this.state;
@@ -70,8 +67,15 @@ class ContactForm extends Component {
   }
 }
 
-const mapDispatchToProps = {
-  onAddContact: phoneBookActions.addContact,
+const mapStateToProps = (state) => {
+  return {
+    contacts: state.contacts.items,
+  };
 };
 
-export default connect(null, mapDispatchToProps)(ContactForm);
+const mapDispatchToProps = {
+  onAddContact: phoneBookActions.addContact,
+  onAlert: phoneBookActions.duplicate,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);

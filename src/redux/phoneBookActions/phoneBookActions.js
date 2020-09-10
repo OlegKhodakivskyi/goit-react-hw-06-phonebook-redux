@@ -27,4 +27,8 @@ const filter = (filter) => {
   };
 };
 
-export default { addContact, deleteContact, filter };
+const duplicate = () => ({
+  type: phoneBookActionsTypes.DUPLICATE,
+});
+
+export default { addContact, deleteContact, filter, duplicate };

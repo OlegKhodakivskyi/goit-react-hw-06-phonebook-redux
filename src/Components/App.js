@@ -29,18 +29,6 @@ class App extends Component {
     }
   }
 
-  alertNotification = () => {
-    this.props.alertNotification();
-  };
-
-  // findContact = () => {
-  //   return this.state.filter
-  //     ? this.state.contacts.filter((contact) =>
-  //         contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
-  //       )
-  //     : this.state.contacts;
-  // };
-
   render() {
     return (
       <>
@@ -82,16 +70,8 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    contacts: state.contacts,
-    alert: state.alert,
+    contacts: state.contacts.alert,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    // addContact: (contact) => dispatch(phoneBookActions.onAddContact(contact)),
-    alertNotification: () => dispatch(phoneBookActions.alertNotification()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);
